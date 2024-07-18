@@ -8,6 +8,9 @@ import prismaClient from '../prisma';
 import { ICreateUserDTO } from '../models/DTOs';
 import { ICreateUserDTOResponse } from '../models/DTOs/User/ICreateUserDTOResponse';
 
+// Errors
+import { AppError } from '../errors/AppError';
+
 class CreateUserService {
   /**
    * Executes the user creation process.
@@ -32,8 +35,8 @@ class CreateUserService {
       });
 
       return user;
-    } catch (error) {
-      throw new Error(error as string);
+    } catch {
+      throw new AppError('Erro ao criar usuário. Por favor, tente novamente.', 400);
     }
   }
 
@@ -44,24 +47,23 @@ class CreateUserService {
    */
   private static async validateInput({ name, email, password }: ICreateUserDTO): Promise<void> {
     if (!name || !email || !password) {
-      throw new Error('Preencha todos os campos');
+      throw new AppError('Preencha todos os campos', 400);
     }
 
     if (password.length < 8) {
-      throw new Error('A senha deve ter pelo menos 8 caracteres');
+      throw new AppError('A senha deve ter pelo menos 8 caracteres', 400);
     }
 
-    // Regex simples para validação de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      throw new Error('Email inválido');
+      throw new AppError('Email inválido', 400);
     }
 
     const emailExists = await prismaClient.user.findUnique({
       where: { email }
     });
     if (emailExists) {
-      throw new Error('Email já está em uso');
+      throw new AppError('Erro ao criar usuário. Por favor, tente novamente.', 400);
     }
   }
 
