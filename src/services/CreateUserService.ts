@@ -1,6 +1,7 @@
-// Prisma
+// Libs
 import bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+
+// Prisma
 import prismaClient from '../prisma';
 
 // DTOs
