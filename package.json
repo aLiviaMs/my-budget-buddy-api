@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "lint": "npx eslint . --ext .ts",
-    "prisma-studio": "npx prisma studio"
+    "prisma-studio": "npx prisma studio",
+    "prisma-generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "20.14.11",
     "@typescript-eslint/eslint-plugin": "7.16.1",
     "eslint": "8.57.0",
@@ -26,6 +28,7 @@
   "dependencies": {
     "@fastify/cors": "9.0.1",
     "@prisma/client": "5.17.0",
+    "bcrypt": "5.1.1",
     "fastify": "4.28.1",
     "tsx": "4.16.2"
   }
