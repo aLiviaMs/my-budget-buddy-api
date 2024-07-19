@@ -5,7 +5,7 @@ import { FastifyInstance } from 'fastify';
 import { CreateUserController } from '../controllers/CreateUserController';
 
 // Services
-import { CreateUserService } from '../services/CreateUserService';
+import { CreateUserService } from '../services/user/CreateUserService';
 
 /**
  * userRoutes

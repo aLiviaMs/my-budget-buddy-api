@@ -2,16 +2,25 @@
 import bcrypt from 'bcrypt';
 
 // Prisma
-import prismaClient from '../prisma';
+import prismaClient from '../../prisma';
 
 // DTOs
-import { ICreateUserDTO } from '../models/DTOs';
-import { ICreateUserDTOResponse } from '../models/DTOs/User/ICreateUserDTOResponse';
+import { ICreateUserDTO } from '../../models/DTOs';
+import { ICreateUserDTOResponse } from '../../models/DTOs/User/ICreateUserDTOResponse';
 
 // Errors
-import { AppError } from '../errors/AppError';
+import { AppError } from '../../errors/AppError';
+
+// Services
+import { EmailService } from '../email/EmailService';
 
 class CreateUserService {
+  private emailService: EmailService;
+
+  constructor() {
+    this.emailService = new EmailService();
+  }
+
   /**
    * Executes the user creation process.
    *
@@ -22,21 +31,39 @@ class CreateUserService {
   async execute(userData: ICreateUserDTO): Promise<ICreateUserDTOResponse> {
     await CreateUserService.validateInput(userData);
 
-    const passwordHash = await CreateUserService.hashPassword(userData.password);
+    const { email, password, name } = userData;
+    const passwordHash = await CreateUserService.hashPassword(password);
 
     try {
       const user = await prismaClient.user.create({
         data: {
-          name: userData.name,
-          email: userData.email,
+          name,
+          email,
           password: passwordHash,
           status: true
         }
       });
 
+      // Send welcome email
+      this.sendWelcomeEmail(email, name);
+
       return user;
     } catch {
       throw new AppError('Erro ao criar usuário. Por favor, tente novamente.', 400);
+    }
+  }
+
+  /**
+   * Sends a welcome email to the user.
+   * @param email - The user's email.
+   * @param name - The user's name.
+   */
+  private async sendWelcomeEmail(email: string, name: string): Promise<void> {
+    try {
+      await this.emailService.sendWelcomeEmail(email, name);
+    } catch (emailError) {
+      console.error('Erro ao enviar e-mail de boas-vindas:', emailError);
+      // TODO: log this error to a monitoring service
     }
   }
 
