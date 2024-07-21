@@ -1,10 +1,15 @@
+// Libs
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+// Modules
+import { UsersModule } from './modules/users/users.module';
+import { DatabaseModule } from './shared/database/database.module';
+
+const modules = [DatabaseModule, UsersModule];
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService]
+  imports: [...modules],
+  controllers: [],
+  providers: []
 })
 export class AppModule {}
