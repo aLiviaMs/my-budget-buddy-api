@@ -17,12 +17,8 @@ import { BaseController } from './BaseController';
  * It uses the `CreateUserService` to create a user and send the appropriate response.
  */
 class CreateUserController extends BaseController {
-  /** Instance of user service */
-  private createUserService: CreateUserService;
-
-  constructor(createUserService: CreateUserService) {
+  constructor(private createUserService: CreateUserService) {
     super();
-    this.createUserService = createUserService;
   }
 
   /**
