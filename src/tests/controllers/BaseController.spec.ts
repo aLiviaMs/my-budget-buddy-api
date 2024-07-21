@@ -1,13 +1,12 @@
 // Libs
 import { FastifyReply } from 'fastify';
 
-// Erros
+// Errors
 import { AppError } from '../../errors/AppError';
 
-// Controller
+// Controllers
 import { BaseController } from '../../controllers/BaseController';
 
-// Subclasse de Teste
 class TestBaseController extends BaseController {
   public testHandleError(error: unknown, reply: FastifyReply): void {
     this.handleError(error, reply);

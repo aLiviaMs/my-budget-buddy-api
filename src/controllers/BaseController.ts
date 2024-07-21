@@ -1,7 +1,7 @@
 // Libs
 import { FastifyReply } from 'fastify';
 
-// Erros
+// Errors
 import { AppError } from '../errors/AppError';
 
 /**
@@ -12,14 +12,12 @@ import { AppError } from '../errors/AppError';
  */
 class BaseController {
   /**
-   * handleError method
+   * handleError
    *
    * This method is invoked to handle errors that occur during the request handling.
    *
-   * @param error Error - The error that occurred.
-   * @param reply FastifyReply - The response object, used to send the response to the client.
-   *
-   * @returns void
+   * @param error - The error that occurred.
+   * @param reply - The response object, used to send the response to the client.
    */
   protected handleError(error: unknown, reply: FastifyReply): void {
     if (error instanceof AppError) {

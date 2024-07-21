@@ -13,9 +13,7 @@ import { CreateUserService } from '../services/user/CreateUserService';
  * This function is responsible for registering user-related routes in the application.
  * It instantiates the necessary services and controllers, and then registers the routes with the instance.
  *
- * @param app FastifyInstance - The Fastify instance to which the routes will be registered.
- *
- * @returns Promise<void> - A promise that resolves when all user-related routes have been registered.
+ * @param app - The Fastify instance to which the routes will be registered.
  */
 export async function userRoutes(app: FastifyInstance): Promise<void> {
   // Instantiate the services

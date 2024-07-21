@@ -22,14 +22,14 @@ class CreateUserController extends BaseController {
   }
 
   /**
+   * handle
+   *
    * This method is invoked to handle a request for creating a new user.
    * It extracts user data from the request body, uses the `CreateUserService`
    * to create the user in the database, and then sends the created user as a response.
    *
-   * @param request FastifyRequest - The received request, containing user data in the body.
-   * @param reply FastifyReply - The response object, used to send the response to the client.
-   *
-   * @returns Promise<void> - A promise that resolves when the response has been sent.
+   * @param request - The received request, containing user data in the body.
+   * @param reply - The response object, used to send the response to the client.
    */
   async handle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {

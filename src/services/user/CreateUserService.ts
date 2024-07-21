@@ -22,6 +22,8 @@ class CreateUserService {
   }
 
   /**
+   * execute
+   *
    * Executes the user creation process.
    *
    * @param userData - The user data.
@@ -54,6 +56,8 @@ class CreateUserService {
   }
 
   /**
+   * sendWelcomeEmail
+   *
    * Sends a welcome email to the user.
    * @param email - The user's email.
    * @param name - The user's name.
@@ -68,6 +72,8 @@ class CreateUserService {
   }
 
   /**
+   * validateInput
+   *
    * Validates user input and checks for email uniqueness.
    * @param param0 - User input data.
    * @throws If validation fails.
@@ -95,6 +101,8 @@ class CreateUserService {
   }
 
   /**
+   * hashPassword
+   *
    * Hashes the user's password.
    * @param password - The user's password.
    * @returns The hashed password.

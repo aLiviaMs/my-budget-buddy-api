@@ -1,8 +1,11 @@
+// Libs
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+
+// Templates
 import { WelcomeEmailTemplate } from './WelcomeEmailTemplate';
 
-// Carregar variáveis de ambiente do arquivo .env
+// Load envs
 dotenv.config();
 
 /**
@@ -17,7 +20,7 @@ class EmailService {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT ?? '0', 10),
-      secure: process.env.SMTP_PORT === '465', // false para 587 (TLS), true para 465 (SSL)
+      secure: process.env.SMTP_PORT === '465',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
@@ -32,8 +35,6 @@ class EmailService {
    *
    * @param to - The recipient's email address.
    * @param name - The recipient's name.
-   *
-   * @returns - A promise that resolves when the email has been sent.
    */
   async sendWelcomeEmail(to: string, name: string): Promise<void> {
     const mailOptions = {
