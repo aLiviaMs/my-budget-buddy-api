@@ -5,7 +5,7 @@ import { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest } f
 import { CreateUserController } from './controllers/CreateUserController';
 
 // Services
-import { CreateUserService } from './services/CreateUserService';
+import { CreateUserService } from './services/user/CreateUserService';
 
 export async function routes(fastify: FastifyInstance, _options: FastifyPluginOptions): Promise<void> {
   fastify.post('/user', async (request: FastifyRequest, reply: FastifyReply) => {
