@@ -23,4 +23,4 @@ jobs:
       - name: lint
         run: npm run lint
       - name: tests
-        run: npm run test:coverage
+        run: npm run test:cov
