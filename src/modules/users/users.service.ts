@@ -3,25 +3,29 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { hash } from 'bcrypt';
 
 // Dtos
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './models/dto';
 
 // Services
 import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
+import { MailerService } from '../mailer/mailer.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    private readonly _usersRepository: UsersRepository,
+    private _mailerService: MailerService
+  ) {}
 
-  async create(data: CreateUserDto) {
+  public async create(data: CreateUserDto) {
     const { name, email, password } = data;
     const hashedPassword = await hash(password, 12);
-    const emailTaken = await this.usersRepository.findByEmail(email);
+    const emailTaken = await this._usersRepository.findByEmail(email);
 
     if (emailTaken) {
       throw new BadRequestException();
     }
 
-    const user = await this.usersRepository.create({
+    const user = await this._usersRepository.create({
       data: {
         name,
         email,
@@ -49,7 +53,18 @@ export class UsersService {
         }
       }
     });
-    // TODO: create email service
+
+    this._sendWelcomeEMail(user);
+
     return user;
+  }
+
+  private _sendWelcomeEMail(user: CreateUserDto): void {
+    try {
+      this._mailerService.sendWelcomeEMail(user);
+    } catch (error) {
+      console.error(error);
+      // TODO: Create logger monitoring
+    }
   }
 }
