@@ -13,6 +13,6 @@ export class MailerController {
 
   @Get('welcome')
   public async sendWelcomeEmail(@Body() user: CreateUserDto) {
-    return this.mailerService.sendWelcomeEMail(user);
+    return this.mailerService.sendWelcomeEmail(user);
   }
 }

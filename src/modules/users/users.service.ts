@@ -6,7 +6,7 @@ import { hash } from 'bcrypt';
 import { CreateUserDto } from './models/dto';
 
 // Services
-import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
+import { UsersRepository } from '../../shared/database/repositories/users.repositories';
 import { MailerService } from '../mailer/mailer.service';
 
 @Injectable()
@@ -54,14 +54,14 @@ export class UsersService {
       }
     });
 
-    this._sendWelcomeEMail(user);
+    this._sendWelcomeEmail(user);
 
     return user;
   }
 
-  private _sendWelcomeEMail(user: CreateUserDto): void {
+  private _sendWelcomeEmail(user: CreateUserDto): void {
     try {
-      this._mailerService.sendWelcomeEMail(user);
+      this._mailerService.sendWelcomeEmail(user);
     } catch (error) {
       console.error(error);
       // TODO: Create logger monitoring

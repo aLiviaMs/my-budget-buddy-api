@@ -4,13 +4,13 @@ import { MailerService as mailerMain } from '@nestjs-modules/mailer';
 
 // Models
 import { CreateUserDto } from '../users/models/dto';
-import { WelcomeEmailTemplate } from 'src/templates/WelcomeEmailTemplate';
+import { WelcomeEmailTemplate } from '../../templates/WelcomeEmailTemplate';
 
 @Injectable()
 export class MailerService {
   constructor(private readonly mailerMain: mailerMain) {}
 
-  public async sendWelcomeEMail(user: CreateUserDto): Promise<void> {
+  public async sendWelcomeEmail(user: CreateUserDto): Promise<void> {
     const { email, name } = user;
 
     this.mailerMain.sendMail({

@@ -1,4 +1,4 @@
-import { TObject } from 'src/shared/common/types';
+import { TObject } from '../../../../shared/common/types';
 
 export interface IMailService {
   /**
