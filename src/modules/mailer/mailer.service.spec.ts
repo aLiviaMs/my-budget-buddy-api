@@ -1,8 +1,13 @@
+// Libs
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailerService } from './mailer.service';
-import { CreateUserDto } from '../users/models/dto';
-import { PrismaService } from '../../shared/database/prisma.service';
 import { BadRequestException } from '@nestjs/common';
+
+// Services
+import { MailerService } from './mailer.service';
+import { PrismaService } from '../../shared/database/prisma.service';
+
+// Models
+import { CreateUserDto } from '../users/models/dto';
 
 describe('MailerService', () => {
   let service: MailerService;

@@ -1,11 +1,20 @@
+// Libs
+import { BadRequestException } from '@nestjs/common';
+
+// Services
+import { PrismaService } from '../../shared/database/prisma.service';
+import { MailerService } from '../mailer/mailer.service';
+
+// Repositories
+import { UsersRepository } from '../../shared/database/repositories/users.repositories';
+
+// Models
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
-import { DatabaseModule } from '../../shared/database/database.module';
-import { PrismaService } from '../../shared/database/prisma.service';
-import { UsersRepository } from '../../shared/database/repositories/users.repositories';
-import { MailerService } from '../mailer/mailer.service';
 import { CreateUserDto } from './models/dto';
-import { BadRequestException } from '@nestjs/common';
+
+// Modules
+import { DatabaseModule } from '../../shared/database/database.module';
 
 const mockUsersRepository = {
   create: jest.fn().mockImplementation(dto => dto),

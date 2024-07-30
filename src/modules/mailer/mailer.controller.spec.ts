@@ -1,6 +1,13 @@
+// Libs
 import { Test, TestingModule } from '@nestjs/testing';
+
+// Controllers
 import { MailerController } from './mailer.controller';
+
+// Services
 import { MailerService } from './mailer.service';
+
+// Models
 import { CreateUserDto } from '../users/models/dto';
 
 const mockMailerService = {

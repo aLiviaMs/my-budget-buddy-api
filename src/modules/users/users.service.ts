@@ -9,13 +9,28 @@ import { CreateUserDto } from './models/dto';
 import { UsersRepository } from '../../shared/database/repositories/users.repositories';
 import { MailerService } from '../mailer/mailer.service';
 
+/**
+ * Service responsible for user management, including creation and initialization of user data.
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Constructs the UsersService.
+   * @param _usersRepository The repository for user data access.
+   * @param _mailerService The service for sending emails.
+   */
   constructor(
     private readonly _usersRepository: UsersRepository,
     private _mailerService: MailerService
   ) {}
 
+  /**
+   * Creates a new user with the provided data, hashes the password, checks for email uniqueness,
+   * and initializes default categories for the user.
+   * @param data The user data for creating a new user.
+   * @returns The created user object.
+   * @throws {BadRequestException} If the email is already taken.
+   */
   public async create(data: CreateUserDto) {
     const { name, email, password } = data;
     const hashedPassword = await hash(password, 12);
@@ -33,12 +48,11 @@ export class UsersService {
         categories: {
           createMany: {
             data: [
-              // Income
+              // Income categories
               { name: 'Salário', icon: 'salary', type: 'INCOME' },
               { name: 'Freelance', icon: 'freelance', type: 'INCOME' },
               { name: 'Outro', icon: 'other', type: 'INCOME' },
-
-              // OUTCOME
+              // Outcome categories
               { name: 'Casa', icon: 'home', type: 'OUTCOME' },
               { name: 'Alimentação', icon: 'food', type: 'OUTCOME' },
               { name: 'Educação', icon: 'education', type: 'OUTCOME' },
@@ -59,12 +73,17 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Sends a welcome email to the newly created user.
+   * @param user The user to whom the welcome email will be sent.
+   * @private
+   */
   private _sendWelcomeEmail(user: CreateUserDto): void {
     try {
       this._mailerService.sendWelcomeEmail(user);
     } catch (error) {
       console.error(error);
-      // TODO: Create logger monitoring
+      // TODO: Implement logger monitoring
     }
   }
 }
