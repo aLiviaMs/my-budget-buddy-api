@@ -9,18 +9,74 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  email      String    @unique
-  password   String
-  status     Boolean
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
+  id       String @id @default(uuid()) @db.Uuid
+  name     String
+  email    String @unique
+  password String
+
+  bankAccounts BankAccount[]
+  categories   Category[]
+  transactions Transation[]
 
   @@map("users")
+}
+
+enum BankAccountType {
+  CHECKING
+  INVESTMENT
+  CASH
+}
+
+model BankAccount {
+  id             String          @id @default(uuid()) @db.Uuid
+  userId         String          @db.Uuid
+  name           String
+  initialBalance Float
+  type           BankAccountType
+  color          String
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transation[]
+
+  @@map("bankAccounts")
+}
+
+enum TransactionType {
+  INCOME
+  OUTCOME
+}
+
+model Category {
+  id     String          @id @default(uuid()) @db.Uuid
+  userId String          @db.Uuid
+  name   String
+  icon   String
+  type   TransactionType
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transation[]
+
+  @@map("categories")
+}
+
+model Transation {
+  id            String          @id @default(uuid()) @db.Uuid
+  userId        String          @db.Uuid
+  bankAccountId String          @db.Uuid
+  categoryId    String?         @db.Uuid
+  name          String
+  value         Float
+  date          DateTime
+  type          TransactionType
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankAccount BankAccount @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@map("transactions")
 }
