@@ -5,7 +5,7 @@ import { Controller, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 // Decorators
-import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { ActiveUserId } from '../../shared/decorators/ActiveUserId';
 
 /**
  * `UsersController` is responsible for handling HTTP requests related to user information.

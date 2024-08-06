@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { compare, hash } from 'bcrypt';
 
 // Repositories
-import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
+import { UsersRepository } from '../../shared/database/repositories/users.repositories';
 
 // Services
 import { JwtService } from '@nestjs/jwt';

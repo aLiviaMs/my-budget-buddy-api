@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 
 // Repositories
-import { UsersRepository } from 'src/shared/database/repositories/users.repositories';
+import { UsersRepository } from '../../shared/database/repositories/users.repositories';
 
 /**
  * Service responsible for user management.
