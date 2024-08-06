@@ -5,7 +5,7 @@ import { Body, Controller, Get } from '@nestjs/common';
 import { MailerService } from './mailer.service';
 
 // Dtos
-import { CreateUserDto } from '../users/models/dto';
+import { SignupDto } from '../auth/models/dto';
 
 /**
  * A controller for handling mailer actions within the application.
@@ -25,7 +25,7 @@ export class MailerController {
    * @returns A promise resolved by the `MailerService`'s `sendWelcomeEmail` method.
    */
   @Get('welcome')
-  public async sendWelcomeEmail(@Body() user: CreateUserDto) {
+  async sendWelcomeEmail(@Body() user: SignupDto) {
     return this.mailerService.sendWelcomeEmail(user);
   }
 }
