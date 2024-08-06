@@ -1,6 +1,3 @@
-// Libs
-import { BadRequestException } from '@nestjs/common';
-
 // Services
 import { PrismaService } from '../../shared/database/prisma.service';
 import { MailerService } from '../mailer/mailer.service';
@@ -11,14 +8,14 @@ import { UsersRepository } from '../../shared/database/repositories/users.reposi
 // Models
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './models/dto';
 
 // Modules
 import { DatabaseModule } from '../../shared/database/database.module';
 
 const mockUsersRepository = {
   create: jest.fn().mockImplementation(dto => dto),
-  findByEmail: jest.fn()
+  findByEmail: jest.fn(),
+  findById: jest.fn()
 };
 
 const mockMailerService = {
@@ -54,28 +51,9 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a new user record and return that', async () => {
-    const user: CreateUserDto = {
-      email: 'user@example.com',
-      name: 'user',
-      password: 'password'
-    };
+  it('should call user repositor to get user user data', async () => {
+    mockUsersRepository.findById.mockReturnValueOnce({ email: 'foo@bar.com', name: 'bar' });
 
-    mockUsersRepository.findByEmail.mockReturnValueOnce(null);
-
-    expect(await service.create(user)).toEqual(expect.any(Object));
-  });
-
-  it('should throw an error if user already exists', async () => {
-    const user: CreateUserDto = {
-      email: 'existinguser@example.com',
-      name: 'existinguser',
-      password: 'password'
-    };
-
-    // Mock findByEmail to return a user (user already exists)
-    mockUsersRepository.findByEmail.mockReturnValueOnce({ id: 1, email: 'existinguser@example.com' });
-
-    await expect(service.create(user)).rejects.toThrow(BadRequestException);
+    expect(await service.getUserById('123')).toEqual(expect.any(Object));
   });
 });

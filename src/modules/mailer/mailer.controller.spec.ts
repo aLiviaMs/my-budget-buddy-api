@@ -1,4 +1,5 @@
 // Libs
+import 'dotenv/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Controllers
@@ -8,7 +9,7 @@ import { MailerController } from './mailer.controller';
 import { MailerService } from './mailer.service';
 
 // Models
-import { CreateUserDto } from '../users/models/dto';
+import { SignupDto } from '../auth/models/dto';
 
 const mockMailerService = {
   sendWelcomeEmail: jest.fn()
@@ -36,7 +37,7 @@ describe('MailerController', () => {
   });
 
   it('should send welcome email', async () => {
-    const createUserDto: CreateUserDto = {
+    const createUserDto: SignupDto = {
       name: 'Test User',
       email: 'test@example.com',
       password: 'test123'

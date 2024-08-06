@@ -8,15 +8,15 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 
 // Modules
-import { MailerModule } from '../mailer/mailer.module';
+import { AuthModule } from '../auth/auth.module';
 
-const modules = [MailerModule];
+const modules = [AuthModule];
 const controllers = [UsersController];
-const services = [UsersService];
+const providers = [UsersService];
 
 @Module({
   imports: [...modules],
   controllers: [...controllers],
-  providers: [...services]
+  providers: [...providers]
 })
 export class UsersModule {}

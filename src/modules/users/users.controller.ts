@@ -1,31 +1,28 @@
 // Libs
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 // Services
 import { UsersService } from './users.service';
 
-// DTOs
-import { CreateUserDto } from './models/dto';
+// Decorators
+import { ActiveUserId } from '../../shared/decorators/ActiveUserId';
 
 /**
- * A controller for handling user-related actions.
- * Utilizes the `UsersService` to manage user data.
+ * `UsersController` is responsible for handling HTTP requests related to user information.
+ * It interacts with the `UsersService` to retrieve user data.
  */
 @Controller('users')
 export class UsersController {
-  /**
-   * Instantiates the `UsersController`.
-   * @param usersService The injected `UsersService` instance for managing users.
-   */
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly _usersService: UsersService) {}
 
   /**
-   * Endpoint to create a new user.
-   * @param createUserDto The user data transferred in the request body, used to create a new user.
-   * @returns The result of the `UsersService.create` method, typically the newly created user.
+   * Handles the GET request to retrieve the currently authenticated user's information.
+   *
+   * @param id - The ID of the currently authenticated user, injected by `@ActiveUserId()` decorator.
+   * @returns The user information for the given user ID.
    */
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @Get('/me')
+  me(@ActiveUserId() id: string) {
+    return this._usersService.getUserById(id);
   }
 }

@@ -7,14 +7,11 @@ import { UsersController } from './users.controller';
 // Services
 import { UsersService } from './users.service';
 
-// Models
-import { CreateUserDto } from './models/dto';
-
 const mockUsersService = {
-  create: jest.fn(dto => {
+  getUserById: jest.fn(() => {
     return {
-      id: Date.now(),
-      ...dto
+      email: '',
+      name: ''
     };
   })
 };
@@ -40,16 +37,11 @@ describe('UsersController', () => {
     expect(usersController).toBeDefined();
   });
 
-  it('should create a user', async () => {
-    const createUserDto: CreateUserDto = {
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'test123'
-    };
+  it("should get user's information", async () => {
+    const id = '1';
+    const result = await usersController.me(id);
 
-    const result = await usersController.create(createUserDto);
-
-    expect(result).toEqual({ id: expect.any(Number), ...createUserDto });
-    expect(usersService.create).toHaveBeenCalledWith(createUserDto);
+    expect(result).toEqual({ email: expect.any(String), name: expect.any(String) });
+    expect(usersService.getUserById).toHaveBeenCalledWith(id);
   });
 });
