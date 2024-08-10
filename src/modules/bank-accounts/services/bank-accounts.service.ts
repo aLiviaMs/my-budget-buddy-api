@@ -7,11 +7,11 @@ import { ValidateBankAccountOwnershipService } from './bank-account-ownership.se
 @Injectable()
 export class BankAccountsService {
   constructor(
-    private readonly bankAccountRepository: BankAccountsRepository,
-    private readonly validateBankAccountOwnershipService: ValidateBankAccountOwnershipService
+    private readonly _bankAccountRepository: BankAccountsRepository,
+    private readonly _validateBankAccountOwnershipService: ValidateBankAccountOwnershipService
   ) {}
   create(userId: string, createBankAccountDto: CreateBankAccountDto) {
-    return this.bankAccountRepository.create({
+    return this._bankAccountRepository.create({
       data: {
         ...createBankAccountDto,
         userId
@@ -19,9 +19,31 @@ export class BankAccountsService {
     });
   }
 
-  findAllByUserId(userId: string) {
-    return this.bankAccountRepository.findMany({
-      where: { userId }
+  async findAllByUserId(userId: string) {
+    const bankAccounts = await this._bankAccountRepository.findMany({
+      where: { userId },
+      include: {
+        transactions: {
+          select: {
+            value: true,
+            type: true
+          }
+        }
+      }
+    });
+
+    return bankAccounts.map(({ transactions, ...bankAccount }) => {
+      const totalTransactions = transactions.reduce(
+        (acc, transaction) => acc + (transaction.type === 'INCOME' ? transaction.value : -transaction.value),
+        0
+      );
+
+      const currentBalance = bankAccount.initialBalance + totalTransactions;
+
+      return {
+        ...bankAccount,
+        currentBalance
+      };
     });
   }
 
@@ -30,17 +52,17 @@ export class BankAccountsService {
   }
 
   async update(userId: string, backAccountId: string, updateBankAccountDto: UpdateBankAccountDto) {
-    this.validateBankAccountOwnershipService.validate(userId, backAccountId);
+    this._validateBankAccountOwnershipService.validate(userId, backAccountId);
 
-    return this.bankAccountRepository.update({
+    return this._bankAccountRepository.update({
       where: { id: backAccountId },
       data: updateBankAccountDto
     });
   }
 
   async remove(userId: string, bankAccountId: string) {
-    this.validateBankAccountOwnershipService.validate(userId, bankAccountId);
+    this._validateBankAccountOwnershipService.validate(userId, bankAccountId);
 
-    await this.bankAccountRepository.delete({ where: { id: bankAccountId } });
+    await this._bankAccountRepository.delete({ where: { id: bankAccountId } });
   }
 }

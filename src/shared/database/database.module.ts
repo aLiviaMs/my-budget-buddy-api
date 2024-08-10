@@ -8,9 +8,10 @@ import { PrismaService } from './prisma.service';
 import { UsersRepository } from './repositories/users.repositories';
 import { CategoriesRepository } from './repositories/categories.repositories';
 import { BankAccountsRepository } from './repositories/bank-accounts.repositories';
+import { TransactionsRepository } from './repositories/transactions.repositories';
 
 const services = [PrismaService];
-const repositories = [UsersRepository, CategoriesRepository, BankAccountsRepository];
+const repositories = [UsersRepository, CategoriesRepository, BankAccountsRepository, TransactionsRepository];
 
 @Global()
 @Module({

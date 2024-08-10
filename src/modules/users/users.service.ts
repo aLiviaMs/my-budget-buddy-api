@@ -9,7 +9,7 @@ import { UsersRepository } from '../../shared/database/repositories/users.reposi
  */
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private _usersRepository: UsersRepository) {}
 
   /**
    * Retrieves a user's information by their ID.
@@ -18,6 +18,6 @@ export class UsersService {
    * @returns The user object if found, otherwise null.
    */
   getUserById(id: string) {
-    return this.usersRepository.findById(id);
+    return this._usersRepository.findById(id);
   }
 }

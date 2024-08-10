@@ -16,6 +16,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 import { env } from 'src/shared/config/env';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { BankAccountsModule } from './modules/bank-accounts/bank-accounts.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 
 const modules = [DatabaseModule, UsersModule, MailerModule, AuthModule];
 
@@ -48,7 +49,7 @@ const customProviders = [
 ];
 
 @Module({
-  imports: [...modules, ...customModuleImports, CategoriesModule, BankAccountsModule],
+  imports: [...modules, ...customModuleImports, CategoriesModule, BankAccountsModule, TransactionsModule],
   controllers: [],
   providers: [...customProviders]
 })

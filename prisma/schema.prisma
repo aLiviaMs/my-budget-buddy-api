@@ -21,7 +21,7 @@ model User {
 
   bankAccounts BankAccount[]
   categories   Category[]
-  transactions Transation[]
+  transactions Transaction[]
 
   @@map("users")
 }
@@ -40,8 +40,8 @@ model BankAccount {
   type           BankAccountType
   color          String
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions Transation[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
 
   @@map("bankAccounts")
 }
@@ -58,13 +58,13 @@ model Category {
   icon   String
   type   TransactionType
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions Transation[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
 
   @@map("categories")
 }
 
-model Transation {
+model Transaction {
   id            String          @id @default(uuid()) @db.Uuid
   userId        String          @db.Uuid
   bankAccountId String          @db.Uuid

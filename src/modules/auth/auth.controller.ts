@@ -23,7 +23,7 @@ import { IsPublic } from '../../shared/decorators/IsPublic';
 @IsPublic()
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly _authService: AuthService) {}
 
   /**
    * Handles the POST request to authenticate a user.
@@ -33,7 +33,7 @@ export class AuthController {
    */
   @Post('signin')
   authenticate(@Body() signinDto: SigninDto) {
-    return this.authService.signin(signinDto);
+    return this._authService.signin(signinDto);
   }
 
   /**
@@ -44,6 +44,6 @@ export class AuthController {
    */
   @Post('signup')
   create(@Body() signupDto: SignupDto) {
-    return this.authService.signup(signupDto);
+    return this._authService.signup(signupDto);
   }
 }

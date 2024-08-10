@@ -8,9 +8,13 @@ import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class CategoriesRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly _prismaService: PrismaService) {}
 
   findMany(findManyDto: Prisma.CategoryFindManyArgs) {
-    return this.prismaService.category.findMany(findManyDto);
+    return this._prismaService.category.findMany(findManyDto);
+  }
+
+  findFirst(findFirstDto: Prisma.CategoryFindFirstArgs) {
+    return this._prismaService.category.findFirst(findFirstDto);
   }
 }

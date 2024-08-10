@@ -15,9 +15,9 @@ import { SignupDto } from '../auth/models/dto';
 export class MailerController {
   /**
    * Instantiates the `MailerController`.
-   * @param mailerService The injected `MailerService` instance for sending emails.
+   * @param _mailerService The injected `MailerService` instance for sending emails.
    */
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(private readonly _mailerService: MailerService) {}
 
   /**
    * Endpoint to send a welcome email to a new user.
@@ -26,6 +26,6 @@ export class MailerController {
    */
   @Get('welcome')
   async sendWelcomeEmail(@Body() user: SignupDto) {
-    return this.mailerService.sendWelcomeEmail(user);
+    return this._mailerService.sendWelcomeEmail(user);
   }
 }

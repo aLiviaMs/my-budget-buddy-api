@@ -6,16 +6,16 @@ import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 
 @Controller('bank-accounts')
 export class BankAccountsController {
-  constructor(private readonly bankAccountsService: BankAccountsService) {}
+  constructor(private readonly _bankAccountsService: BankAccountsService) {}
 
   @Post()
   create(@ActiveUserId() userId: string, @Body() createBankAccountDto: CreateBankAccountDto) {
-    return this.bankAccountsService.create(userId, createBankAccountDto);
+    return this._bankAccountsService.create(userId, createBankAccountDto);
   }
 
   @Get()
   findAll(@ActiveUserId() userId: string) {
-    return this.bankAccountsService.findAllByUserId(userId);
+    return this._bankAccountsService.findAllByUserId(userId);
   }
 
   @Put(':bankAccountId')
@@ -24,12 +24,12 @@ export class BankAccountsController {
     @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string,
     @Body() updateBankAccountDto: UpdateBankAccountDto
   ) {
-    return this.bankAccountsService.update(userId, bankAccountId, updateBankAccountDto);
+    return this._bankAccountsService.update(userId, bankAccountId, updateBankAccountDto);
   }
 
   @Delete(':bankAccountId')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@ActiveUserId() userId: string, @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string) {
-    return this.bankAccountsService.remove(userId, bankAccountId);
+    return this._bankAccountsService.remove(userId, bankAccountId);
   }
 }
