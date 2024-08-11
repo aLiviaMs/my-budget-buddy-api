@@ -1,5 +1,6 @@
 // Libs
 import { Controller, Get, Post, Body, Param, Delete, Put, ParseUUIDPipe, HttpCode, HttpStatus, Query, ParseIntPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Models
 import { CreateTransactionDto } from './models/dto/create-transaction.dto';
@@ -16,36 +17,22 @@ import { TransactionsService } from './services/transactions.service';
 // Decorators
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 
-/**
- * Controller responsible for managing transactions.
- */
+@ApiTags('Transactions')
+@ApiBearerAuth()
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly _transactionsService: TransactionsService) {}
 
-  /**
-   * Creates a new transaction.
-   *
-   * @param userId - ID of the active user.
-   * @param createTransactionDto - Data for creating the transaction.
-   * @returns The created transaction.
-   */
   @Post()
+  @ApiOperation({ summary: 'Create a new transaction.' })
+  @ApiResponse({ status: 201, description: 'The transaction has been successfully created.' })
   create(@ActiveUserId() userId: string, @Body() createTransactionDto: CreateTransactionDto) {
     return this._transactionsService.create(userId, createTransactionDto);
   }
 
-  /**
-   * Retrieves all transactions for a specific user based on filters.
-   *
-   * @param userId - ID of the active user.
-   * @param month - Month filter for transactions.
-   * @param year - Year filter for transactions.
-   * @param bankAccountId - Optional bank account ID filter for transactions.
-   * @param type - Optional type filter for transactions.
-   * @returns A list of transactions matching the filters.
-   */
   @Get()
+  @ApiOperation({ summary: 'Get all transactions for a user with optional filters.' })
+  @ApiResponse({ status: 200, description: 'A list of transactions matching the filters.' })
   findAllByUserId(
     @ActiveUserId() userId: string,
     @Query('month', ParseIntPipe) month: number,
@@ -56,15 +43,9 @@ export class TransactionsController {
     return this._transactionsService.findAll(userId, { month, year, bankAccountId, type });
   }
 
-  /**
-   * Updates an existing transaction.
-   *
-   * @param userId - ID of the active user.
-   * @param transactionId - ID of the transaction to be updated.
-   * @param updateTransactionDto - Data for updating the transaction.
-   * @returns The updated transaction.
-   */
   @Put(':transactionId')
+  @ApiOperation({ summary: 'Update an existing transaction.' })
+  @ApiResponse({ status: 200, description: 'The transaction has been successfully updated.' })
   update(
     @ActiveUserId() userId: string,
     @Param('transactionId', ParseUUIDPipe) transactionId: string,
@@ -73,15 +54,10 @@ export class TransactionsController {
     return this._transactionsService.update(userId, transactionId, updateTransactionDto);
   }
 
-  /**
-   * Removes an existing transaction.
-   *
-   * @param userId - ID of the active user.
-   * @param transactionId - ID of the transaction to be removed.
-   * @returns void
-   */
   @Delete(':transactionId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete an existing transaction.' })
+  @ApiResponse({ status: 204, description: 'The transaction has been successfully deleted.' })
   remove(@ActiveUserId() userId: string, @Param('transactionId', ParseUUIDPipe) transactionId: string) {
     return this._transactionsService.remove(userId, transactionId);
   }

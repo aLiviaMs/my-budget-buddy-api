@@ -1,6 +1,6 @@
 {
   "name": "my-budget-buddy-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "author": "Livia Minucelli Silva",
   "private": true,
@@ -29,6 +29,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.4.0",
     "@prisma/client": "^5.17.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",

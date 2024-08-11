@@ -1,5 +1,6 @@
 // Libs
 import { Controller, Get } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { CategoriesService } from './services/categories.service';
@@ -7,20 +8,15 @@ import { CategoriesService } from './services/categories.service';
 // Models
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 
-/**
- * Controller responsible for managing categories.
- */
+@ApiTags('Categories')
+@ApiBearerAuth()
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly _categoriesService: CategoriesService) {}
 
-  /**
-   * Retrieves all categories for a specific user.
-   *
-   * @param userId - ID of the active user.
-   * @returns A list of categories belonging to the user.
-   */
   @Get()
+  @ApiOperation({ summary: 'Retrieve all categories for a specific user.' })
+  @ApiResponse({ status: 200, description: 'A list of categories belonging to the user.' })
   findAllByUserId(@ActiveUserId() userId: string) {
     return this._categoriesService.findAllByUserId(userId);
   }

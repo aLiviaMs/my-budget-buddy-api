@@ -1,5 +1,6 @@
 // Libs
 import { Controller, Get } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Services
 import { UsersService } from './users.service';
@@ -7,21 +8,15 @@ import { UsersService } from './users.service';
 // Decorators
 import { ActiveUserId } from '../../shared/decorators/ActiveUserId';
 
-/**
- * `UsersController` is responsible for handling HTTP requests related to user information.
- * It interacts with the `UsersService` to retrieve user data.
- */
+@ApiTags('Users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly _usersService: UsersService) {}
 
-  /**
-   * Handles the GET request to retrieve the currently authenticated user's information.
-   *
-   * @param id - The ID of the currently authenticated user, injected by `@ActiveUserId()` decorator.
-   * @returns The user information for the given user ID.
-   */
   @Get('/me')
+  @ApiOperation({ summary: "Get the currently authenticated user's information." })
+  @ApiResponse({ status: 200, description: 'The user information has been successfully retrieved.' })
   me(@ActiveUserId() id: string) {
     return this._usersService.getUserById(id);
   }

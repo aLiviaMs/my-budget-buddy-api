@@ -1,5 +1,6 @@
 // Libs
 import { Controller, Get, Post, Body, Param, Delete, Put, ParseUUIDPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Models
 import { CreateBankAccountDto } from './models/dto/create-bank-account.dto';
@@ -9,45 +10,29 @@ import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 // Services
 import { BankAccountsService } from './services/bank-accounts.service';
 
-/**
- * Controller responsible for managing bank accounts.
- */
+@ApiTags('Bank Accounts')
+@ApiBearerAuth()
 @Controller('bank-accounts')
 export class BankAccountsController {
   constructor(private readonly _bankAccountsService: BankAccountsService) {}
 
-  /**
-   * Creates a new bank account.
-   *
-   * @param userId - ID of the active user.
-   * @param createBankAccountDto - Data for creating the bank account.
-   * @returns The created bank account.
-   */
   @Post()
+  @ApiOperation({ summary: 'Create a new bank account.' })
+  @ApiResponse({ status: 201, description: 'The bank account has been successfully created.' })
   create(@ActiveUserId() userId: string, @Body() createBankAccountDto: CreateBankAccountDto) {
     return this._bankAccountsService.create(userId, createBankAccountDto);
   }
 
-  /**
-   * Returns all bank accounts of the user.
-   *
-   * @param userId - ID of the active user.
-   * @returns List of the user's bank accounts.
-   */
   @Get()
+  @ApiOperation({ summary: 'Get all bank accounts of the user.' })
+  @ApiResponse({ status: 200, description: "A list of the user's bank accounts." })
   findAll(@ActiveUserId() userId: string) {
     return this._bankAccountsService.findAllByUserId(userId);
   }
 
-  /**
-   * Updates an existing bank account.
-   *
-   * @param userId - ID of the active user.
-   * @param bankAccountId - ID of the bank account to be updated.
-   * @param updateBankAccountDto - Data for updating the bank account.
-   * @returns The updated bank account.
-   */
   @Put(':bankAccountId')
+  @ApiOperation({ summary: 'Update an existing bank account.' })
+  @ApiResponse({ status: 200, description: 'The bank account has been successfully updated.' })
   update(
     @ActiveUserId() userId: string,
     @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string,
@@ -56,15 +41,10 @@ export class BankAccountsController {
     return this._bankAccountsService.update(userId, bankAccountId, updateBankAccountDto);
   }
 
-  /**
-   * Removes an existing bank account.
-   *
-   * @param userId - ID of the active user.
-   * @param bankAccountId - ID of the bank account to be removed.
-   * @returns void
-   */
   @Delete(':bankAccountId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete an existing bank account.' })
+  @ApiResponse({ status: 204, description: 'The bank account has been successfully deleted.' })
   remove(@ActiveUserId() userId: string, @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string) {
     return this._bankAccountsService.remove(userId, bankAccountId);
   }
