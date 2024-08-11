@@ -1,12 +1,22 @@
+// Libs
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './../dto/create-transaction.dto';
-import { UpdateTransactionDto } from './../dto/update-transaction.dto';
-import { TransactionsRepository } from 'src/shared/database/repositories/transactions.repositories';
+
+// Models
+import { CreateTransactionDto } from './../models/dto/create-transaction.dto';
+import { UpdateTransactionDto } from './../models/dto/update-transaction.dto';
+import { TransactionFiltersDto } from '../models/dto/transactions-filters.dto';
+
+// Services
 import { ValidateBankAccountOwnershipService } from '../../bank-accounts/services/bank-account-ownership.service';
 import { ValidateCategoryOwnershipService } from '../../categories/services/validate-category-ownership.service';
 import { ValidateTransactionOwnershipService } from './validate-transaction-ownership.service';
-import { TransactionFiltersDto } from '../dto/transactions-filters.dto';
 
+// Repositories
+import { TransactionsRepository } from 'src/shared/database/repositories/transactions.repositories';
+
+/**
+ * Service responsible for managing transactions.
+ */
 @Injectable()
 export class TransactionsService {
   constructor(
@@ -16,6 +26,13 @@ export class TransactionsService {
     private readonly _validateTransactionOwnershipService: ValidateTransactionOwnershipService
   ) {}
 
+  /**
+   * Creates a new transaction.
+   *
+   * @param userId - ID of the user creating the transaction.
+   * @param createTransactionDto - Data for creating the transaction.
+   * @returns The created transaction.
+   */
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
     const { bankAccountId, categoryId } = createTransactionDto;
 
@@ -29,6 +46,13 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Retrieves all transactions for a specific user based on filters.
+   *
+   * @param userId - ID of the user whose transactions are to be retrieved.
+   * @param filters - Filters to apply to the transactions query.
+   * @returns A list of transactions matching the filters.
+   */
   findAll(userId: string, filters: TransactionFiltersDto) {
     const { month, year, bankAccountId, type } = filters;
 
@@ -45,6 +69,14 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Updates an existing transaction.
+   *
+   * @param userId - ID of the user updating the transaction.
+   * @param transactionId - ID of the transaction to be updated.
+   * @param updateTransactionDto - Data for updating the transaction.
+   * @returns The updated transaction.
+   */
   async update(userId: string, transactionId: string, updateTransactionDto: UpdateTransactionDto) {
     const { bankAccountId, categoryId } = updateTransactionDto;
 
@@ -64,6 +96,13 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Removes an existing transaction.
+   *
+   * @param userId - ID of the user removing the transaction.
+   * @param transactionId - ID of the transaction to be removed.
+   * @returns void
+   */
   async remove(userId: string, transactionId: string) {
     await this._validateEntitiesOwnership({ transactionId, userId });
 
@@ -72,6 +111,15 @@ export class TransactionsService {
     });
   }
 
+  /**
+   * Validates the ownership of related entities.
+   *
+   * @param userId - ID of the user.
+   * @param bankAccountId - ID of the bank account (optional).
+   * @param categoryId - ID of the category (optional).
+   * @param transactionId - ID of the transaction (optional).
+   * @returns void
+   */
   private async _validateEntitiesOwnership({
     userId,
     bankAccountId,

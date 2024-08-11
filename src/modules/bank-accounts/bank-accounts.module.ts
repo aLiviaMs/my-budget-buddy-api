@@ -10,11 +10,11 @@ import { BankAccountsController } from './bank-accounts.controller';
 
 const controllers = [BankAccountsController];
 const providers = [ValidateBankAccountOwnershipService, BankAccountsService];
-const exportsProviders = [ValidateBankAccountOwnershipService];
+const exportsItems = [ValidateBankAccountOwnershipService];
 
 @Module({
-  controllers: [...controllers],
-  providers: [...providers],
-  exports: [...exportsProviders]
+  controllers,
+  providers,
+  exports: [...exportsItems]
 })
 export class BankAccountsModule {}

@@ -27,7 +27,7 @@ const providers = [AuthService];
     }),
     ...modules
   ],
-  controllers: [...controllers],
-  providers: [...providers]
+  controllers,
+  providers
 })
 export class AuthModule {}
